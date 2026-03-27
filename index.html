@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANT'S | Premium Coffee & Restaurant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #EBE6DF;
+            --bg-secondary: #F4F1ED;
+            --text-main: #1C1B19;
+            --text-muted: #5A564F;
+            --accent: #C25A2A;
+            --accent-hover: #A0451E;
+            --border-color: rgba(28, 27, 25, 0.1);
+            --font-heading: 'Playfair Display', serif;
+            --font-text: 'Manrope', sans-serif;
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+            --transition-slow: 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-med: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            --transition-fast: 0.3s ease;
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        html::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: var(--font-text);
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.5;
+            cursor: none;
+        }
+
+        ::selection {
+            background-color: var(--accent);
+            color: #fff;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-heading);
+            font-weight: 500;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            cursor: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 4vw;
+        }
+
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent);
+            transition: transform 0.2s var(--ease-out-expo);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent);
+            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background-color 0.3s;
+        }
+
+        body.hovering .cursor-outline {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(194, 90, 42, 0.1);
+            border-color: transparent;
+        }
+
+        body.hovering .cursor-dot {
+            transform: translate(-50%, -50%) scale(0.5);
+        }
+
+        .preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--text-main);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1.5s var(--ease-in-out-circ);
+        }
+
+        .preloader.hidden {
+            transform: translateY(-100%);
+        }
+
+        .preloader-text {
+            font-family: var(--font-heading);
+            font-size: 8vw;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .preloader-text::before {
+            content: "ANT'S";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--bg-primary);
+            width: 0%;
+            overflow: hidden;
+            animation: fillText 2s var(--ease-out-expo) forwards;
+        }
+
+        @keyframes fillText {
+            100% {
+                width: 100%;
+            }
+        }
+
+        .reveal-text {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .reveal-text span {
+            display: inline-block;
+            transform: translateY(110%) rotate(5deg);
+            transform-origin: top left;
+            transition: transform 1.2s var(--ease-out-expo);
+        }
+
+        .reveal-text.is-inview span {
+            transform: translateY(0) rotate(0);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
+        }
+
+        .fade-up.is-inview {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-reveal {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-reveal::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--bg-primary);
+            transition: transform 1.5s var(--ease-out-expo);
+            transform-origin: right;
+        }
+
+        .image-reveal.is-inview::after {
+            transform: scaleX(0);
+        }
+
+        .image-reveal img {
+            transform: scale(1.2);
+            transition: transform 2s var(--ease-out-expo);
+        }
+
+        .image-reveal.is-inview img {
+            transform: scale(1);
+        }
+
+        .btn-magnetic-wrap {
+            display: inline-block;
+            padding: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--text-main);
+            transition: background var(--transition-fast), color var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+            background: transparent;
+            z-index: 1;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--text-main);
+            border-radius: 50%;
+            transition: transform 0.6s var(--ease-out-expo);
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: var(--bg-primary);
+            border-color: transparent;
+        }
+
+        .btn:hover::before {
+            transform: translateY(-100%) scale(2);
+            border-radius: 0;
+        }
+
+        .btn-accent {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-accent::before {
+            background: var(--accent);
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 0;
+            z-index: 1000;
+            mix-blend-mode: difference;
+            color: #fff;
+            transition: background 0.4s, padding 0.4s;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: currentColor;
+            transform: translateX(-105%);
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+
+        .nav-links a:hover::after {
+            transform: translateX(0);
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 10px;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 28px;
+            height: 2px;
+            background: currentColor;
+            transition: 0.4s;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            inset: 0;
+            background: var(--text-main);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            transform: translateY(-100%);
+            transition: transform 0.8s var(--ease-in-out-circ);
+        }
+
+        .mobile-nav.active {
+            transform: translateY(0);
+        }
+
+        .mobile-nav a {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            color: var(--bg-primary);
+            text-transform: uppercase;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 120px 0 60px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background: radial-gradient(circle at 80% 50%, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 4vw;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3.5rem, 7vw, 7.5rem);
+            line-height: 1;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .hero-content h1 span.italic {
+            font-style: italic;
+            color: var(--accent);
+            font-weight: 400;
+            text-transform: none;
+        }
+
+        .hero-desc {
+            font-size: clamp(1rem, 1.1vw, 1.4rem);
+            color: var(--text-muted);
+            max-width: 85%;
+            margin-bottom: 45px;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .plate-container {
+            position: relative;
+            width: 40vw;
+            height: 40vw;
+            max-width: 550px;
+            max-height: 550px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: spinPlate 45s linear infinite;
+        }
+
+        .plate-inner-1 {
+            width: 75%;
+            height: 75%;
+            border-radius: 50%;
+            border: 1px dashed var(--border-color);
+            position: absolute;
+        }
+
+        .plate-inner-2 {
+            width: 45%;
+            height: 45%;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
+            position: absolute;
+        }
+
+        .plate-img {
+            width: 48%;
+            height: 48%;
+            border-radius: 50%;
+            object-fit: cover;
+            position: absolute;
+            z-index: 5;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .decor-item {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            color: var(--accent);
+            z-index: 6;
+        }
+
+        .decor-1 {
+            top: -20px;
+            left: 50%;
+        }
+
+        .decor-2 {
+            bottom: 20%;
+            right: -10px;
+            transform: rotate(45deg);
+        }
+
+        .decor-3 {
+            bottom: 10%;
+            left: 10%;
+            transform: rotate(-30deg);
+        }
+
+        @keyframes spinPlate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: var(--text-main);
+            color: var(--bg-primary);
+            padding: 25px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ticker {
+            display: flex;
+            white-space: nowrap;
+            width: fit-content;
+            animation: tickerAnim 25s linear infinite;
+        }
+
+        .ticker h2 {
+            font-size: clamp(2rem, 4vw, 4rem);
+            font-weight: 400;
+            text-transform: uppercase;
+            padding-right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .ticker h2 i {
+            font-size: 0.6em;
+            color: var(--accent);
+        }
+
+        @keyframes tickerAnim {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(-50%, 0, 0);
+            }
+        }
+
+        .about {
+            padding: clamp(80px, 15vh, 180px) 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 0.8fr 1.2fr;
+            gap: clamp(40px, 8vw, 120px);
+            align-items: center;
+        }
+
+        .about-subtitle {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            display: block;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .about-text p {
+            font-size: clamp(1.8rem, 3vw, 3.2rem);
+            font-family: var(--font-heading);
+            line-height: 1.2;
+            margin-bottom: 35px;
+        }
+
+        .about-text p span.muted {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .about-image {
+            width: 100%;
+            aspect-ratio: 4/5;
+            max-height: 80vh;
+            background-color: var(--bg-secondary);
+            background-image: url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=1000");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            border-radius: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .features {
+            padding: clamp(60px, 10vh, 120px) 0;
+            background: var(--bg-secondary);
+            border-radius: 40px;
+            margin: 0 2vw;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: clamp(50px, 8vh, 100px);
+            padding: 0 4vw;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 5vw, 5.5rem);
+            margin-bottom: 15px;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(350px, auto));
+            gap: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 4vw;
+        }
+
+        .bento-item {
+            background: var(--bg-primary);
+            border-radius: 32px;
+            padding: clamp(30px, 40px, 50px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.06);
+            border-color: var(--accent);
+        }
+
+        .bento-bg-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 100% 0%, rgba(194, 90, 42, 0.1) 0%, transparent 70%);
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.6s;
+        }
+
+        .bento-item:hover .bento-bg-gradient {
+            opacity: 1;
+        }
+
+        .item-1 {
+            grid-column: span 2;
+            grid-row: span 1;
+            background: var(--text-main);
+            color: var(--bg-primary);
+        }
+
+        .item-2 {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .item-3 {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .item-4 {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .item-5 {
+            grid-column: span 4;
+            grid-row: span 1;
+        }
+
+        .bento-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            z-index: 2;
+        }
+
+        .bento-tag {
+            display: inline-block;
+            padding: 6px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        .item-1 .bento-tag {
+            border-color: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .bento-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            background: var(--bg-secondary);
+            color: var(--accent);
+            transition: 0.5s var(--ease-out-expo);
+        }
+
+        .item-1 .bento-icon {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--bg-primary);
+        }
+
+        .bento-item:hover .bento-icon {
+            transform: scale(1.1) rotate(15deg);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .bento-number {
+            position: absolute;
+            right: 20px;
+            bottom: -10px;
+            font-size: 12rem;
+            font-family: var(--font-heading);
+            font-weight: 800;
+            color: rgba(28, 27, 25, 0.03);
+            line-height: 1;
+            z-index: 1;
+            pointer-events: none;
+            transition: 0.6s var(--ease-out-expo);
+        }
+
+        .item-1 .bento-number {
+            color: rgba(255, 255, 255, 0.03);
+        }
+
+        .bento-item:hover .bento-number {
+            transform: translateY(-20px);
+            color: rgba(194, 90, 42, 0.06);
+        }
+
+        .bento-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .bento-content h3 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .bento-content p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 90%;
+        }
+
+        .item-1 .bento-content p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .bento-arrow {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 25px;
+            transition: 0.4s;
+            font-size: 1.3rem;
+        }
+
+        .item-1 .bento-arrow {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .bento-item:hover .bento-arrow {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            transform: translate(5px, -5px);
+        }
+
+        .branches {
+            padding: clamp(80px, 15vh, 150px) 0;
+        }
+
+        .branches-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .branch-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 50px 40px;
+            transition: 0.6s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .branch-card:hover {
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.08);
+            border-color: var(--accent);
+            transform: translateY(-10px);
+        }
+
+        .branch-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border: 1px solid var(--accent);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .branch-card h3 {
+            font-size: 2.8rem;
+            margin-bottom: 18px;
+        }
+
+        .branch-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        footer {
+            background: var(--text-main);
+            color: var(--bg-primary);
+            padding: 120px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-bg-text {
+            position: absolute;
+            bottom: -5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 22vw;
+            line-height: 0.8;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.02);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 60px;
+            margin-bottom: 100px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-col h4 {
+            font-size: 1rem;
+            margin-bottom: 35px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 18px;
+        }
+
+        .footer-col ul a {
+            font-size: 1.1rem;
+            transition: 0.3s;
+            display: inline-block;
+            opacity: 0.8;
+        }
+
+        .footer-col ul a:hover {
+            color: var(--accent);
+            opacity: 1;
+            transform: translateX(8px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 1400px) {
+            .hero-content h1 {
+                font-size: 6.5vw;
+            }
+
+            .bento-number {
+                font-size: 10rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 10vw;
+            }
+
+            .hero-desc {
+                max-width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .plate-container {
+                width: 60vw;
+                height: 60vw;
+                margin: 0 auto;
+            }
+
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .item-1,
+            .item-4,
+            .item-5 {
+                grid-column: span 2;
+            }
+
+            .item-2,
+            .item-3 {
+                grid-column: span 1;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .about-text p {
+                font-size: 8vw;
+            }
+
+            .about-image {
+                max-height: 60vh;
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .branches-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .branch-card {
+                padding: 40px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 50px;
+            }
+
+            .footer-col h4 {
+                margin-bottom: 20px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                mix-blend-mode: normal;
+                background: var(--bg-primary);
+                color: var(--text-main);
+                padding: 15px 0;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .cursor-dot,
+            .cursor-outline {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            a {
+                cursor: pointer;
+            }
+
+            .bento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item-1,
+            .item-2,
+            .item-3,
+            .item-4,
+            .item-5 {
+                grid-column: span 1;
+            }
+
+            .hero-content h1 {
+                font-size: 14vw;
+            }
+
+            .hero {
+                padding-top: 100px;
+            }
+
+            .plate-container {
+                width: 85vw;
+                height: 85vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 6vw;
+            }
+
+            .hero-content h1 {
+                font-size: 16vw;
+            }
+
+            .section-header h2 {
+                font-size: 3rem;
+            }
+
+            .branch-card h3 {
+                font-size: 2rem;
+            }
+
+            .bento-content h3 {
+                font-size: 1.6rem;
+            }
+
+            .bento-number {
+                font-size: 6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <div class="preloader" id="preloader">
+        <div class="preloader-text">ANT'S</div>
+    </div>
+
+    <header id="header">
+        <div class="container nav-inner">
+            <a href="#" class="logo">ANT'S</a>
+            <ul class="nav-links">
+                <li><a href="#about" class="hover-target">О нас</a></li>
+                <li><a href="#menu" class="hover-target">Меню</a></li>
+                <li><a href="#branches" class="hover-target">Филиалы</a></li>
+                <li><a href="#b2b" class="hover-target">Бизнес & Вакансии</a></li>
+            </ul>
+            <button class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav" id="mobile-nav">
+        <a href="#about">О нас</a>
+        <a href="#menu">Меню</a>
+        <a href="#branches">Филиалы</a>
+        <a href="#b2b">Бизнес</a>
+    </div>
+
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <h1 class="fade-up">
+                    <div class="reveal-text"><span>Искусство</span></div><br>
+                    <div class="reveal-text"><span>в каждой</span></div><br>
+                    <div class="reveal-text"><span><span class="italic">чашке</span> кофе.</span></div>
+                </h1>
+                <p class="hero-desc fade-up">Добро пожаловать в место, где вкус становится эстетикой, а время
+                    замедляется для вашего уюта и вдохновения.</p>
+                <div class="btn-magnetic-wrap fade-up">
+                    <a href="#menu" class="btn btn-accent hover-target magnetic-btn">Смотреть меню</a>
+                </div>
+            </div>
+            <div class="hero-visual fade-up">
+                <div class="plate-container">
+                    <div class="plate-inner-1"></div>
+                    <div class="plate-inner-2"></div>
+                    <img src="/coffee.png"
+                        alt="Coffee Cup" class="plate-img">
+                    <svg class="decor-item decor-1 parallax-el" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM11 19.93C7.05 19.43 4 16.05 4 12C4 7.95 7.05 4.57 11 4.07V19.93ZM13 4.07C16.95 4.57 20 7.95 20 12C20 16.05 16.95 19.43 13 19.93V4.07Z" />
+                    </svg>
+                    <svg class="decor-item decor-2 parallax-el" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17 3H7C4.79 3 3 4.79 3 7V17C3 19.21 4.79 21 7 21H17C19.21 21 21 19.21 21 17V7C21 4.79 19.21 3 17 3ZM12 18C8.69 18 6 15.31 6 12C6 8.69 8.69 6 12 6C15.31 6 18 8.69 18 12C18 15.31 15.31 18 12 18ZM13 8H11V11H8V13H11V16H13V13H16V11H13V8Z" />
+                    </svg>
+                    <svg class="decor-item decor-3 parallax-el" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <h2>COFFEE <i class="ri-sparkling-fill"></i> PIZZA <i class="ri-sparkling-fill"></i> STEAKS <i
+                    class="ri-sparkling-fill"></i> DESSERTS <i class="ri-sparkling-fill"></i> ATMOSPHERE <i
+                    class="ri-sparkling-fill"></i></h2>
+            <h2>COFFEE <i class="ri-sparkling-fill"></i> PIZZA <i class="ri-sparkling-fill"></i> STEAKS <i
+                    class="ri-sparkling-fill"></i> DESSERTS <i class="ri-sparkling-fill"></i> ATMOSPHERE <i
+                    class="ri-sparkling-fill"></i></h2>
+        </div>
+    </div>
+
+    <section class="about" id="about">
+        <div class="container about-grid">
+            <div class="about-info">
+                <span class="about-subtitle fade-up">Наша История</span>
+                <div class="about-text">
+                    <p class="fade-up">
+                        <span class="reveal-text"><span>Мы</span></span>
+                        <span class="reveal-text"><span>создали</span></span>
+                        <span class="reveal-text"><span>это</span></span>
+                        <span class="reveal-text"><span>место</span></span><br>
+                        <span class="reveal-text"><span>с</span></span>
+                        <span class="reveal-text"><span class="accent">любовью</span></span>
+                        <span class="reveal-text"><span>к</span></span>
+                        <span class="reveal-text"><span>каждой</span></span>
+                        <span class="reveal-text"><span>детали.</span></span>
+                    </p>
+                </div>
+                <p class="fade-up"
+                    style="color: var(--text-muted); font-size: 1.1rem; max-width: 480px; margin-bottom: 40px;">Наша
+                    история началась в 2020 году с мечты об идеальном утре. Мы гордимся авторскими рецептами,
+                    экологической ответственностью и современным подходом к сервису.</p>
+                <div class="btn-magnetic-wrap fade-up">
+                    <a href="#" class="btn hover-target magnetic-btn">Узнать больше</a>
+                </div>
+            </div>
+            <div class="about-image image-reveal"></div>
+        </div>
+    </section>
+
+    <section class="features" id="menu">
+        <div class="section-header">
+            <h2 class="fade-up">Наш Подход</h2>
+            <p class="fade-up" style="color: var(--text-muted);">Идеальное сочетание традиций и смелых гастрономических
+                решений.</p>
+        </div>
+        <div class="bento-grid">
+            <div class="bento-item item-1 fade-up hover-target">
+                <div class="bento-bg-gradient"></div>
+                <div class="bento-header">
+                    <span class="bento-tag">Качество</span>
+                    <div class="bento-icon"><i class="ri-cup-line"></i></div>
+                </div>
+                <div class="bento-content">
+                    <div class="bento-number">01</div>
+                    <h3>Идеальный кофе</h3>
+                    <p>Зерна свежей обжарки и мастерство бариста в каждой порции эспрессо.</p>
+                    <div class="bento-arrow"><i class="ri-arrow-right-up-line"></i></div>
+                </div>
+            </div>
+            <div class="bento-item item-2 fade-up hover-target">
+                <div class="bento-bg-gradient"></div>
+                <div class="bento-header">
+                    <span class="bento-tag">Уют</span>
+                    <div class="bento-icon"><i class="ri-restaurant-line"></i></div>
+                </div>
+                <div class="bento-content">
+                    <div class="bento-number">02</div>
+                    <h3>Интерьер</h3>
+                    <p>Эстетика минимализма для вашего комфорта и вдохновения.</p>
+                    <div class="bento-arrow"><i class="ri-arrow-right-up-line"></i></div>
+                </div>
+            </div>
+            <div class="bento-item item-3 fade-up hover-target">
+                <div class="bento-bg-gradient"></div>
+                <div class="bento-header">
+                    <span class="bento-tag">Гриль</span>
+                    <div class="bento-icon"><i class="ri-fire-line"></i></div>
+                </div>
+                <div class="bento-content">
+                    <div class="bento-number">03</div>
+                    <h3>Мясо & Огонь</h3>
+                    <p>Премиальные стейки, приготовленные на открытом огне.</p>
+                    <div class="bento-arrow"><i class="ri-arrow-right-up-line"></i></div>
+                </div>
+            </div>
+            <div class="bento-item item-4 fade-up hover-target">
+                <div class="bento-bg-gradient"></div>
+                <div class="bento-header">
+                    <span class="bento-tag">Семья</span>
+                    <div class="bento-icon"><i class="ri-bear-smile-line"></i></div>
+                </div>
+                <div class="bento-content">
+                    <div class="bento-number">04</div>
+                    <h3>Kids Friendly</h3>
+                    <p>Специальное меню и уютные игровые зоны для маленьких гостей.</p>
+                    <div class="bento-arrow"><i class="ri-arrow-right-up-line"></i></div>
+                </div>
+            </div>
+            <div class="bento-item item-5 fade-up hover-target">
+                <div class="bento-bg-gradient"></div>
+                <div class="bento-header">
+                    <span class="bento-tag">Десерты</span>
+                    <div class="bento-icon"><i class="ri-cake-3-line"></i></div>
+                </div>
+                <div class="bento-content">
+                    <div class="bento-number">05</div>
+                    <h3>Сладкая жизнь</h3>
+                    <p>Авторские десерты, которые влюбляют с первого кусочка. Натуральные ингредиенты и неповторимый
+                        вкус.</p>
+                    <div class="bento-arrow"><i class="ri-arrow-right-up-line"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="branches" id="branches">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="fade-up">Наши Локации</h2>
+            </div>
+            <div class="branches-grid">
+                <div class="branch-card fade-up hover-target">
+                    <span class="branch-badge">Main Spot</span>
+                    <h3>Erkindik</h3>
+                    <p>Сердце города. Идеально для утренних завтраков и неспешных прогулок с кофе.</p>
+                </div>
+                <div class="branch-card fade-up hover-target">
+                    <span class="branch-badge">Business</span>
+                    <h3>Novotel</h3>
+                    <p>Премиальная локация для деловых встреч и продуктивной работы.</p>
+                </div>
+                <div class="branch-card fade-up hover-target">
+                    <span class="branch-badge">Modern</span>
+                    <h3>Seven</h3>
+                    <p>Современный ритм и быстрая подача для тех, кто ценит свое время.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="b2b">
+        <div class="footer-bg-text">ANT'S</div>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <a href="#" class="logo" style="color: #fff; margin-bottom: 25px; display: block;">ANT'S</a>
+                <p style="color: rgba(255,255,255,0.4); max-width: 280px;">Пространство, где каждая деталь имеет
+                    значение.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Навигация</h4>
+                <ul>
+                    <li><a href="#about" class="hover-target">О нас</a></li>
+                    <li><a href="#menu" class="hover-target">Меню</a></li>
+                    <li><a href="#branches" class="hover-target">Филиалы</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Бизнес</h4>
+                <ul>
+                    <li><a href="#" class="hover-target">Франшиза</a></li>
+                    <li><a href="#" class="hover-target">Карьера</a></li>
+                    <li><a href="#" class="hover-target">События</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Контакты</h4>
+                <p style="color: rgba(255,255,255,0.4); margin-bottom: 20px;">Присоединяйтесь к нашей команде.</p>
+                <div class="btn-magnetic-wrap">
+                    <a href="#" class="btn btn-accent hover-target magnetic-btn"
+                        style="color: #fff; border-color: rgba(255,255,255,0.2);">Написать нам</a>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <div>&copy; <span id="year"></span> Ant's Coffee & Restaurant. All rights reserved.</div>
+            <div>Design & Development by Web Studio.</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            const lenis = new Lenis({
+                duration: 1.2,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smooth: true,
+                mouseMultiplier: 1,
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+                initScrollReveals();
+            }, 2000);
+
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorOutline = document.getElementById('cursor-outline');
+            const hoverTargets = document.querySelectorAll('.hover-target, a, button');
+
+            let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursorDot.style.left = `${mouseX}px`;
+                cursorDot.style.top = `${mouseY}px`;
+            });
+
+            const animateCursor = () => {
+                outlineX += (mouseX - outlineX) * 0.15;
+                outlineY += (mouseY - outlineY) * 0.15;
+                cursorOutline.style.left = `${outlineX}px`;
+                cursorOutline.style.top = `${outlineY}px`;
+                requestAnimationFrame(animateCursor);
+            };
+            animateCursor();
+
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+                target.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+            });
+
+            const magneticBtns = document.querySelectorAll('.magnetic-btn');
+            magneticBtns.forEach(btn => {
+                const wrap = btn.parentElement;
+                wrap.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+                wrap.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0px, 0px)';
+                });
+            });
+
+            function initScrollReveals() {
+                const revealElements = document.querySelectorAll('.fade-up, .reveal-text, .image-reveal');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-inview');
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+                revealElements.forEach(el => observer.observe(el));
+            }
+
+            const hero = document.querySelector('.hero');
+            const parallaxEls = document.querySelectorAll('.parallax-el');
+            if (hero) {
+                hero.addEventListener('mousemove', (e) => {
+                    const x = (window.innerWidth / 2 - e.pageX) / 40;
+                    const y = (window.innerHeight / 2 - e.pageY) / 40;
+                    parallaxEls.forEach((el, i) => {
+                        const speed = (i + 1) * 0.4;
+                        el.style.transform = `translate(${x * speed}px, ${y * speed}px) rotate(${x * 0.2}deg)`;
+                    });
+                });
+            }
+
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    header.style.mixBlendMode = 'normal';
+                    header.style.background = 'rgba(235, 230, 223, 0.95)';
+                    header.style.color = 'var(--text-main)';
+                    header.style.padding = '15px 0';
+                    header.style.backdropFilter = 'blur(10px)';
+                    header.style.boxShadow = '0 10px 30px rgba(0,0,0,0.05)';
+                } else {
+                    if (window.innerWidth > 768) {
+                        header.style.mixBlendMode = 'difference';
+                        header.style.background = 'transparent';
+                        header.style.color = '#fff';
+                        header.style.backdropFilter = 'none';
+                        header.style.boxShadow = 'none';
+                    }
+                    header.style.padding = '25px 0';
+                }
+            });
+
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileNav = document.getElementById('mobile-nav');
+            const mobileLinks = mobileNav.querySelectorAll('a');
+
+            menuToggle.addEventListener('click', () => {
+                mobileNav.classList.toggle('active');
+                const isActive = mobileNav.classList.contains('active');
+                menuToggle.style.color = isActive ? '#EBE6DF' : 'inherit';
+            });
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileNav.classList.remove('active');
+                });
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        lenis.scrollTo(target);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
