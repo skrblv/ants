@@ -1,40 +1,26 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ANT'S | Premium Coffee Experience</title>
     
-    <!-- Подключение премиальных шрифтов -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Иконки -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
-    
-    <!-- Плавный скролл (Lenis) -->
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     
     <style>
-        /* ==========================================
-           1. ПЕРЕМЕННЫЕ И БАЗОВЫЕ НАСТРОЙКИ
-        ========================================== */
         :root {
-            --bg-dark: #0a0908;
-            --bg-card: rgba(255, 255, 255, 0.03);
+            --bg-dark: #070707;
             --text-light: #f2ede4;
-            --text-muted: #a39e93;
-            --accent: #c68a47; /* Карамельно-золотой */
-            --accent-hover: #e0a96d;
-            --border: rgba(242, 237, 228, 0.1);
-            
+            --text-muted: #8a867d;
+            --accent: #d4a373;
+            --border-light: rgba(255, 255, 255, 0.08);
             --font-heading: 'Cormorant Garamond', serif;
             --font-text: 'Manrope', sans-serif;
-            
             --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-            --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
         }
 
         *, *::before, *::after {
@@ -45,7 +31,7 @@
 
         html {
             scrollbar-width: none;
-            scroll-behavior: auto; /* Контролируется через Lenis */
+            background-color: var(--bg-dark);
         }
 
         html::-webkit-scrollbar {
@@ -58,9 +44,7 @@
             color: var(--text-light);
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             cursor: none;
-            line-height: 1.6;
         }
 
         ::selection {
@@ -83,7 +67,7 @@
             list-style: none;
         }
 
-        img, video {
+        img {
             max-width: 100%;
             display: block;
             object-fit: cover;
@@ -91,76 +75,53 @@
 
         .container {
             width: 100%;
-            max-width: 1700px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 0 4vw;
+            position: relative;
+            z-index: 2;
         }
 
-        /* ==========================================
-           2. ПРЕМИАЛЬНЫЕ ЭФФЕКТЫ (ШУМ, КУРСОР, ПРЕЛОАДЕР)
-        ========================================== */
-        /* Пленочный шум (Grain) для дорогой текстуры */
         .noise {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
             pointer-events: none;
             z-index: 9999;
             opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Кастомный курсор */
-        .cursor-dot, .cursor-outline {
+        .cursor {
             position: fixed;
-            top: 0; 
+            top: 0;
             left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 10000;
-            pointer-events: none;
-        }
-
-        .cursor-dot {
-            width: 6px; 
+            width: 6px;
             height: 6px;
-            background-color: var(--text-light);
-            mix-blend-mode: difference;
-            transition: transform 0.2s var(--ease-out-expo);
-        }
-
-        .cursor-outline {
-            width: 40px; 
-            height: 40px;
-            border: 1px solid rgba(242, 237, 228, 0.5);
-            transition: width 0.4s var(--ease-out-expo), height 0.4s var(--ease-out-expo), background-color 0.4s;
+            background: var(--text-light);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+            transition: width 0.3s var(--ease-out-expo), height 0.3s var(--ease-out-expo), background 0.3s, mix-blend-mode 0.3s;
             mix-blend-mode: difference;
         }
 
-        body.hovering .cursor-outline {
-            width: 80px; 
-            height: 80px;
-            background-color: var(--text-light);
-            border-color: transparent;
+        .cursor.active {
+            width: 60px;
+            height: 60px;
+            background: var(--text-light);
             mix-blend-mode: difference;
         }
 
-        body.hovering .cursor-dot {
-            opacity: 0;
-        }
-
-        /* Кинематографичный прелоадер */
         .preloader {
-            position: fixed; 
+            position: fixed;
             inset: 0;
             background: var(--bg-dark);
             z-index: 100000;
-            display: flex; 
-            justify-content: center; 
+            display: flex;
+            justify-content: center;
             align-items: center;
-            transition: opacity 1.5s var(--ease-in-out-circ), visibility 1.5s;
+            transition: opacity 1.2s cubic-bezier(0.85, 0, 0.15, 1), visibility 1.2s;
         }
 
         .preloader.hidden {
@@ -170,281 +131,207 @@
 
         .preloader-logo {
             font-family: var(--font-heading);
-            font-size: clamp(3rem, 5vw, 6rem);
-            letter-spacing: 0.5em;
+            font-size: clamp(2rem, 4vw, 5rem);
+            letter-spacing: 0.3em;
             color: transparent;
-            -webkit-text-stroke: 1px var(--border);
+            -webkit-text-stroke: 1px var(--border-light);
             position: relative;
             text-transform: uppercase;
         }
 
         .preloader-logo::before {
             content: "ANT'S";
-            position: absolute; 
-            left: 0; 
+            position: absolute;
+            left: 0;
             top: 0;
             color: var(--accent);
-            width: 0%; 
+            width: 0%;
             overflow: hidden;
             white-space: nowrap;
-            animation: fillLogo 2s var(--ease-out-expo) forwards;
+            animation: preloaderFill 2s var(--ease-out-expo) forwards;
         }
 
-        @keyframes fillLogo { 
-            100% { width: 100%; } 
+        @keyframes preloaderFill {
+            100% { width: 100%; }
         }
 
-        /* ==========================================
-           3. АНИМАЦИИ (SCROLL REVEAL)
-        ========================================== */
-        .mask-text { 
-            overflow: hidden; 
-            display: inline-block; 
-            vertical-align: bottom; 
-        }
-
-        .mask-text span {
+        .btn-wrap {
             display: inline-block;
-            transform: translateY(120%) rotate(5deg);
-            transition: transform 1.2s var(--ease-out-expo);
-        }
-
-        .mask-text.is-inview span { 
-            transform: translateY(0) rotate(0); 
-        }
-
-        .fade-up {
-            opacity: 0; 
-            transform: translateY(40px);
-            transition: opacity 1s var(--ease-out-expo), transform 1s var(--ease-out-expo);
-        }
-
-        .fade-up.is-inview { 
-            opacity: 1; 
-            transform: translateY(0); 
-        }
-
-        .img-reveal { 
-            position: relative; 
-            overflow: hidden; 
-        }
-
-        .img-reveal::after {
-            content: ''; 
-            position: absolute; 
-            inset: 0;
-            background: var(--bg-dark);
-            transition: transform 1.5s var(--ease-out-expo);
-            transform-origin: top;
-            z-index: 2;
-        }
-
-        .img-reveal.is-inview::after { 
-            transform: scaleY(0); 
-        }
-
-        .img-reveal img {
-            transform: scale(1.2); 
-            transition: transform 2s var(--ease-out-expo);
-        }
-
-        .img-reveal.is-inview img { 
-            transform: scale(1); 
-        }
-
-        /* ==========================================
-           4. КНОПКИ
-        ========================================== */
-        .btn-wrap { 
-            display: inline-block; 
-            padding: 10px; 
+            padding: 10px 0;
         }
 
         .btn {
-            display: inline-flex; 
-            align-items: center; 
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
             padding: 20px 50px;
-            border: 1px solid var(--border);
             border-radius: 100px;
-            font-size: 0.8rem; 
-            text-transform: uppercase; 
+            font-size: 0.75rem;
+            text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-light);
-            position: relative; 
+            position: relative;
             overflow: hidden;
-            transition: border-color 0.4s;
+            box-shadow: inset 0 0 0 1px var(--border-light);
+            transition: color 0.4s, box-shadow 0.4s;
             z-index: 1;
         }
 
         .btn::before {
-            content: ''; 
-            position: absolute; 
-            top: 100%; 
-            left: 0;
-            width: 100%; 
-            height: 100%;
-            background: var(--text-light);
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 120%;
+            height: 0;
+            padding-bottom: 120%;
+            background: var(--accent);
             border-radius: 50%;
-            transition: transform 0.6s var(--ease-out-expo); 
+            transform: translate(-50%, 0);
+            transition: transform 0.6s var(--ease-out-expo);
             z-index: -1;
         }
 
-        .btn:hover { 
-            color: var(--bg-dark); 
-            border-color: var(--text-light); 
+        .btn:hover {
+            color: var(--bg-dark);
+            box-shadow: inset 0 0 0 1px transparent;
         }
 
-        .btn:hover::before { 
-            transform: translateY(-100%) scale(2); 
-            border-radius: 0; 
-        }
-        
-        .btn-accent { 
-            border-color: var(--accent); 
-            color: var(--accent); 
+        .btn:hover::before {
+            transform: translate(-50%, -100%);
         }
 
-        .btn-accent::before { 
-            background: var(--accent); 
-        }
-
-        .btn-accent:hover { 
-            color: var(--bg-dark); 
-            border-color: var(--accent); 
-        }
-
-        /* ==========================================
-           5. ШАПКА И НАВИГАЦИЯ (HEADER)
-        ========================================== */
         header {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 30px 0; 
+            padding: 35px 0;
             z-index: 1000;
-            transition: padding 0.5s, background 0.5s, backdrop-filter 0.5s, border-bottom 0.5s;
+            transition: padding 0.6s var(--ease-out-expo), background 0.6s, backdrop-filter 0.6s;
         }
 
         header.scrolled {
             padding: 15px 0;
-            background: rgba(10, 9, 8, 0.8);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border);
+            background: rgba(7, 7, 7, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
         }
 
         .nav-inner {
-            display: flex; 
-            justify-content: space-between; 
+            display: flex;
+            justify-content: space-between;
             align-items: center;
         }
 
         .logo {
             font-family: var(--font-heading);
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             letter-spacing: 4px;
             color: var(--text-light);
             text-transform: uppercase;
         }
 
         .nav-links {
-            display: flex; 
+            display: flex;
             gap: 40px;
         }
 
         .nav-links a {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-light);
             position: relative;
-            padding-bottom: 5px;
+            padding: 10px;
+            display: inline-block;
+            transition: color 0.4s;
         }
 
         .nav-links a::after {
             content: '';
-            position: absolute; 
-            bottom: 0; 
-            left: 0;
-            width: 100%; 
+            position: absolute;
+            bottom: 5px;
+            left: 10px;
+            width: calc(100% - 20px);
             height: 1px;
             background: var(--accent);
-            transform: scaleX(0); 
+            transform: scaleX(0);
             transform-origin: right;
             transition: transform 0.6s var(--ease-out-expo);
         }
 
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
         .nav-links a:hover::after {
-            transform: scaleX(1); 
+            transform: scaleX(1);
             transform-origin: left;
         }
 
         .nav-meta {
-            display: flex; 
-            gap: 20px; 
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
+            display: flex;
+            gap: 20px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .nav-meta a { 
-            transition: color 0.3s; 
-            color: var(--text-muted); 
+        .nav-meta a {
+            transition: color 0.3s;
+            color: var(--text-muted);
+            padding: 10px;
         }
 
-        .nav-meta a.active, .nav-meta a:hover { 
-            color: var(--accent); 
+        .nav-meta a.active, .nav-meta a:hover {
+            color: var(--text-light);
         }
 
-        /* Мобильное меню (гамбургер) */
         .menu-toggle {
             display: none;
             flex-direction: column;
             gap: 6px;
             background: none;
             border: none;
-            cursor: pointer;
             z-index: 1001;
-            padding: 10px;
+            padding: 15px;
             color: var(--text-light);
         }
 
         .menu-toggle span {
             display: block;
             width: 30px;
-            height: 2px;
+            height: 1px;
             background: currentColor;
             transition: 0.4s var(--ease-out-expo);
             transform-origin: center;
         }
 
         .menu-toggle.active span:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
+            transform: translateY(7px) rotate(45deg);
         }
         .menu-toggle.active span:nth-child(2) {
             opacity: 0;
         }
         .menu-toggle.active span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
+            transform: translateY(-7px) rotate(-45deg);
         }
 
         .mobile-nav {
             position: fixed;
             inset: 0;
-            background: rgba(10, 9, 8, 0.98);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--bg-dark);
             z-index: 999;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 30px;
+            gap: 40px;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.6s, visibility 0.6s;
+            transition: opacity 0.8s var(--ease-out-expo), visibility 0.8s;
         }
 
         .mobile-nav.active {
@@ -454,69 +341,114 @@
 
         .mobile-nav a {
             font-family: var(--font-heading);
-            font-size: 3rem;
+            font-size: 4rem;
             color: var(--text-light);
             text-transform: uppercase;
-            transform: translateY(30px);
+            transform: translateY(40px) rotate(5deg);
             opacity: 0;
-            transition: transform 0.6s var(--ease-out-expo), opacity 0.6s;
+            transition: transform 0.8s var(--ease-out-expo), opacity 0.8s;
         }
 
         .mobile-nav.active a {
-            transform: translateY(0);
+            transform: translateY(0) rotate(0);
             opacity: 1;
         }
 
         .mobile-nav a:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-nav a:nth-child(2) { transition-delay: 0.2s; }
-        .mobile-nav a:nth-child(3) { transition-delay: 0.3s; }
+        .mobile-nav a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-nav a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-nav a:nth-child(4) { transition-delay: 0.25s; }
 
-        /* ==========================================
-           6. HERO СЕКЦИЯ (С ВИДЕО)
-        ========================================== */
+        @keyframes noiseMove {
+            0% { transform: translate(0,0); }
+            25% { transform: translate(-10px, 5px); }
+            50% { transform: translate(10px, -5px); }
+            75% { transform: translate(-5px, -10px); }
+            100% { transform: translate(0,0); }
+        }
+
         .hero {
             height: 100vh;
-            min-height: 600px;
-            display: flex; 
+            min-height: 700px;
+            display: flex;
             align-items: center;
             position: relative;
-            padding-top: 80px;
             overflow: hidden;
         }
 
-        .hero-video {
+        .hero::before {
+            content: "";
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: -20px;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 3;
+            animation: noiseMove 0.3s infinite linear;
+        }
+
+        .hero.noise-boost::before {
+            opacity: 0.09;
+        }
+
+        .hero-video-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background: var(--bg-dark);
+        }
+
+        .video-layer {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -2;
-            filter: brightness(0.6); /* Затемнение видео для читаемости текста */
-             /* Легкий зум для скрытия краев при скролле */
+            filter: brightness(0.75) contrast(1.1) saturate(1.05);
         }
 
-        /* Градиент поверх видео для лучшего контраста */
         .hero-overlay {
-            position: absolute; 
+            position: absolute;
             inset: 0;
-            background: linear-gradient(to top, var(--bg-dark) 0%, rgba(10, 9, 8, 0.3) 50%, rgba(10, 9, 8, 0.6) 100%);
-            z-index: -1;
+            background: linear-gradient(
+                to top,
+                rgba(7,7,7,0.85) 0%,
+                rgba(7,7,7,0.3) 40%,
+                transparent 70%
+            );
+            z-index: 2;
         }
 
         .hero-content {
             width: 100%;
             text-align: center;
             position: relative;
-            z-index: 1;
+            z-index: 4;
         }
 
         .hero-title {
-            font-size: clamp(4rem, 10vw, 12rem);
-            line-height: 0.9;
+            font-size: clamp(4rem, 11vw, 14rem);
+            line-height: 0.85;
             text-transform: uppercase;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             letter-spacing: -2px;
+        }
+
+        .mask-text {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+
+        .mask-text span {
+            display: inline-block;
+            transform: translateY(120%) rotate(5deg);
+            transition: transform 1.5s var(--ease-out-expo);
+        }
+
+        .mask-text.is-inview span {
+            transform: translateY(0) rotate(0);
         }
 
         .hero-title .italic {
@@ -526,650 +458,515 @@
         }
 
         .hero-subtitle {
-            font-size: clamp(1rem, 1.5vw, 1.5rem);
-            color: var(--text-light);
-            max-width: 600px;
+            font-size: clamp(1rem, 1.2vw, 1.2rem);
+            color: var(--text-muted);
+            max-width: 500px;
             margin: 0 auto 50px;
             font-weight: 300;
-            opacity: 0.9;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.5s var(--ease-out-expo) 0.5s, transform 1.5s var(--ease-out-expo) 0.5s;
         }
 
-        /* ==========================================
-           7. БЕГУЩАЯ СТРОКА (MARQUEE)
-        ========================================== */
+        .hero-subtitle.is-inview {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1.2s var(--ease-out-expo), transform 1.2s var(--ease-out-expo);
+        }
+
+        .fade-up.is-inview {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .marquee {
-            padding: 40px 0; 
-            border-top: 1px solid var(--border); 
-            border-bottom: 1px solid var(--border);
-            overflow: hidden; 
-            white-space: nowrap; 
+            padding: 40px 0;
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+            overflow: hidden;
+            white-space: nowrap;
             display: flex;
             background: var(--bg-dark);
         }
 
         .marquee-inner {
-            display: flex; 
-            animation: scroll 25s linear infinite;
+            display: flex;
+            animation: scrollMarquee 30s linear infinite;
         }
 
         .marquee h2 {
             font-size: clamp(2.5rem, 5vw, 5rem);
-            margin-right: 50px;
-            display: flex; 
-            align-items: center; 
-            gap: 50px;
-            color: transparent; 
-            -webkit-text-stroke: 1px var(--text-light);
+            margin-right: 60px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
             text-transform: uppercase;
+            transition: -webkit-text-stroke 0.4s;
         }
 
-        .marquee h2 i { 
-            color: var(--accent); 
-            -webkit-text-stroke: 0; 
-            font-size: 0.6em; 
+        .marquee:hover h2 {
+            -webkit-text-stroke: 1px var(--text-light);
         }
 
-        @keyframes scroll { 
-            0% { transform: translateX(0); } 
-            100% { transform: translateX(-50%); } 
+        .marquee h2 i {
+            color: var(--accent);
+            -webkit-text-stroke: 0;
+            font-size: 0.5em;
         }
 
-        /* ==========================================
-           8. О НАС (ABOUT)
-        ========================================== */
-        .about { 
-            padding: clamp(80px, 15vh, 180px) 0; 
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
         }
 
-        .about-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: clamp(50px, 8vw, 100px); 
-            align-items: center; 
+        .about {
+            padding: clamp(100px, 20vh, 200px) 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(60px, 10vw, 120px);
+            align-items: center;
         }
 
         .label {
-            font-size: 0.75rem; 
-            text-transform: uppercase; 
-            letter-spacing: 3px;
-            color: var(--accent); 
-            display: block; 
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+
+        .about-title {
+            font-size: clamp(2.5rem, 4vw, 5.5rem);
+            line-height: 1.05;
+            margin-bottom: 50px;
+        }
+
+        .about-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
             margin-bottom: 30px;
-            font-weight: 600;
+            font-weight: 300;
+            line-height: 1.9;
         }
 
-        .about-title { 
-            font-size: clamp(2rem, 3.5vw, 4.5rem); 
-            line-height: 1.1; 
-            margin-bottom: 40px; 
+        .about-img-wrap {
+            position: relative;
+            height: clamp(500px, 80vh, 800px);
+            overflow: hidden;
+            border-radius: 4px;
         }
 
-        .about-desc { 
-            font-size: 1.1rem; 
-            color: var(--text-muted); 
-            margin-bottom: 25px; 
-            font-weight: 300; 
-            line-height: 1.8;
+        .img-reveal::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--bg-dark);
+            z-index: 3;
+            transition: transform 1.5s var(--ease-out-expo);
+            transform-origin: top;
         }
 
-        .about-img-wrap { 
-            border-radius: 20px; 
-            overflow: hidden; 
-            height: clamp(400px, 80vh, 800px); 
+        .img-reveal.is-inview::before {
+            transform: scaleY(0);
         }
 
-        .about-img-wrap img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
+        .img-reveal img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.3);
+            transition: transform 2.5s var(--ease-out-expo);
+            filter: grayscale(15%);
         }
 
-        /* ==========================================
-           9. ПРЕИМУЩЕСТВА И МЕНЮ (GLASSMORPHISM BENTO)
-        ========================================== */
-        .features { 
-            padding: clamp(80px, 15vh, 180px) 0; 
-            position: relative; 
+        .img-reveal.is-inview img {
+            transform: scale(1);
         }
 
-        /* Свечение на фоне */
-        .features::before {
-            content: ''; 
-            position: absolute; 
-            top: 30%; 
-            left: 50%; 
-            transform: translate(-50%, -50%);
-            width: 800px; 
-            height: 800px; 
-            background: radial-gradient(circle, rgba(198,138,71,0.06) 0%, transparent 70%);
-            z-index: -1; 
-            pointer-events: none;
+        .features {
+            padding: clamp(100px, 20vh, 200px) 0;
         }
 
-        .sec-title { 
-            text-align: center; 
-            font-size: clamp(2.5rem, 5vw, 6rem); 
-            margin-bottom: clamp(40px, 8vh, 80px); 
+        .sec-title {
+            text-align: center;
+            font-size: clamp(3rem, 6vw, 6rem);
+            margin-bottom: clamp(60px, 10vh, 100px);
+            line-height: 0.9;
         }
-        
+
         .bento {
-            display: grid; 
+            display: grid;
             grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: minmax(350px, auto); 
+            grid-auto-rows: minmax(380px, auto);
             gap: 20px;
         }
 
         .b-card {
-            background: var(--bg-card); 
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border); 
-            border-radius: 30px;
-            padding: clamp(30px, 4vw, 40px); 
-            display: flex; 
-            flex-direction: column; 
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            position: relative; 
-            overflow: hidden; 
-            transition: 0.5s var(--ease-out-expo);
+            position: relative;
+            overflow: hidden;
         }
 
-        .b-card:hover { 
-            border-color: var(--accent); 
-            transform: translateY(-5px); 
-            background: rgba(255,255,255,0.05); 
-        }
-        
-        /* Размеры карточек в сетке */
-        .c-1 { grid-column: span 2; background: url('https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=800&auto=format&fit=crop') center/cover; }
-        .c-1::before { content:''; position:absolute; inset:0; background: rgba(10,9,8,0.7); transition: 0.5s; z-index: 0;}
-        .c-1:hover::before { background: rgba(10,9,8,0.4); }
-        
-        .c-2 { grid-column: span 1; } 
-        .c-3 { grid-column: span 1; } 
-        .c-4 { grid-column: span 1; }
-        .c-5 { grid-column: span 2; } 
-        .c-6 { grid-column: span 1; } 
-        .c-7 { grid-column: span 2; }
-        
-        .c-8 { grid-column: span 2; background: url('https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?q=80&w=800&auto=format&fit=crop') center/cover; }
-        .c-8::before { content:''; position:absolute; inset:0; background: rgba(10,9,8,0.7); transition: 0.5s; z-index: 0;}
-        .c-8:hover::before { background: rgba(10,9,8,0.4); }
-
-        .b-head { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
-            position: relative; 
-            z-index: 2; 
+        .b-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(80%) brightness(0.25);
+            transition: transform 1s var(--ease-out-expo), filter 1s var(--ease-out-expo);
+            z-index: 0;
         }
 
-        .b-tag { 
-            padding: 6px 16px; 
-            border: 1px solid var(--border); 
-            border-radius: 30px; 
-            font-size: 0.65rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
+        .b-card:hover .b-bg {
+            transform: scale(1.05);
+            filter: grayscale(0%) brightness(0.5);
         }
 
-        .b-icon { 
-            width: 55px; 
-            height: 55px; 
-            border-radius: 50%; 
-            border: 1px solid var(--border); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-size: 1.5rem; 
-            color: var(--accent); 
-            transition: 0.5s var(--ease-out-expo); 
+        .b-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 40%, rgba(7,7,7,0.9) 100%);
+            z-index: 1;
         }
 
-        .b-card:hover .b-icon { 
-            background: var(--accent); 
-            color: var(--bg-dark); 
-            transform: rotate(-15deg) scale(1.1); 
+        .b-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .c-1 { grid-column: span 2; grid-row: span 2; }
+        .c-2 { grid-column: span 1; grid-row: span 1; }
+        .c-3 { grid-column: span 1; grid-row: span 1; }
+        .c-4 { grid-column: span 1; grid-row: span 1; }
+        .c-5 { grid-column: span 2; grid-row: span 1; }
+        .c-6 { grid-column: span 1; grid-row: span 1; }
+
+        .b-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .b-tag {
+            padding: 8px 18px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+        }
+
+        .b-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            transition: 0.4s var(--ease-out-expo);
+        }
+
+        .b-card:hover .b-icon {
+            background: var(--accent);
             border-color: var(--accent);
-        }
-        
-        .b-bot { 
-            position: relative; 
-            z-index: 2; 
+            color: var(--bg-dark);
+            transform: rotate(-10deg);
         }
 
-        .b-bot h3 { 
-            font-size: 2rem; 
-            margin-bottom: 12px; 
+        .b-bot h3 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
         }
 
-        .b-bot p { 
-            font-size: 0.95rem; 
-            color: var(--text-muted); 
-            line-height: 1.6; 
-            font-family: var(--font-text); 
+        .b-bot p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
         }
 
-        .b-num { 
-            position: absolute; 
-            right: 20px; 
-            bottom: -10px; 
-            font-size: 8rem; 
-            font-family: var(--font-heading); 
-            color: rgba(255,255,255,0.03); 
-            line-height: 0.8; 
-            pointer-events: none; 
-            transition: 0.6s var(--ease-out-expo); 
+        .b-num {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            font-size: 8rem;
+            font-family: var(--font-heading);
+            color: rgba(255,255,255,0.08);
+            line-height: 0.8;
+            transition: 0.6s var(--ease-out-expo);
         }
 
-        .b-card:hover .b-num { 
-            color: rgba(198,138,71,0.08); 
-            transform: translateY(-15px); 
+        .b-card:hover .b-num {
+            color: rgba(212, 163, 115, 0.15);
+            transform: translateY(-10px);
         }
 
-        /* ==========================================
-           10. ФИЛИАЛЫ (BRANCHES)
-        ========================================== */
-        .branches { 
-            padding: clamp(80px, 15vh, 180px) 0; 
+        .branches {
+            padding: clamp(100px, 15vh, 200px) 0;
         }
 
-        .br-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 30px; 
+        .br-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .br-card {
-            height: clamp(400px, 60vh, 550px); 
-            border-radius: 30px; 
-            overflow: hidden; 
+            height: clamp(450px, 60vh, 600px);
+            border-radius: 12px;
+            overflow: hidden;
             position: relative;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: flex-end; 
-            padding: clamp(30px, 4vw, 40px);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
         }
 
-        .br-bg { 
-            position: absolute; 
-            inset: 0; 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            transition: transform 1.5s var(--ease-out-expo); 
-            z-index: 0; 
+        .br-card-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s var(--ease-out-expo), filter 1.5s;
+            z-index: 0;
+            filter: grayscale(40%) brightness(0.5);
         }
 
-        .br-overlay { 
-            position: absolute; 
-            inset: 0; 
-            background: linear-gradient(to top, rgba(10,9,8,0.9) 0%, rgba(10,9,8,0.2) 60%, rgba(10,9,8,0) 100%); 
-            z-index: 1; 
-            transition: 0.5s; 
+        .br-overlay-grad {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(7,7,7,0.95) 0%, transparent 70%);
+            z-index: 1;
         }
 
-        .br-card:hover .br-bg { 
-            transform: scale(1.08); 
+        .br-card:hover .br-card-bg {
+            transform: scale(1.05);
+            filter: grayscale(0%) brightness(0.4);
         }
 
-        .br-card:hover .br-overlay { 
-            background: linear-gradient(to top, rgba(10,9,8,0.95) 0%, rgba(10,9,8,0.4) 100%); 
+        .br-content {
+            position: relative;
+            z-index: 2;
         }
 
-        .br-content { 
-            position: relative; 
-            z-index: 2; 
-            transform: translateY(20px); 
-            transition: transform 0.6s var(--ease-out-expo); 
+        .br-content h3 {
+            font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+            margin-bottom: 15px;
+            color: var(--text-light);
         }
 
-        .br-card:hover .br-content { 
-            transform: translateY(0); 
+        .br-content p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1rem;
+            line-height: 1.7;
+            max-width: 90%;
         }
 
-        .br-content h3 { 
-            font-size: clamp(2rem, 3vw, 2.8rem); 
-            margin-bottom: 15px; 
-            color: var(--accent); 
-        }
-
-        .br-content p { 
-            color: var(--text-light); 
-            font-size: 1rem; 
-            opacity: 0; 
-            transition: opacity 0.6s var(--ease-out-expo); 
-            line-height: 1.6;
-        }
-
-        .br-card:hover .br-content p { 
-            opacity: 0.9; 
-        }
-
-        /* ==========================================
-           11. ОТЗЫВЫ (INFINITE MARQUEE)
-        ========================================== */
-        .reviews { 
-            padding: clamp(60px, 10vh, 120px) 0; 
-            overflow: hidden; 
-        }
-
-        .rev-track { 
-            display: flex; 
-            gap: 30px; 
-            width: max-content; 
-            animation: scrollRev 40s linear infinite; 
-            padding: 20px 0;
-        }
-
-        .rev-track:hover { 
-            animation-play-state: paused; 
-        }
-
-        .rev-card {
-            width: clamp(300px, 25vw, 450px); 
-            padding: clamp(30px, 3vw, 40px); 
-            background: var(--bg-card); 
-            border: 1px solid var(--border);
-            border-radius: 24px; 
-            white-space: normal; 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: border-color 0.4s;
-        }
-
-        .rev-card:hover {
-            border-color: var(--accent);
-        }
-
-        .stars { 
-            color: var(--accent); 
-            margin-bottom: 20px; 
-            font-size: 1.2rem; 
-            letter-spacing: 2px; 
-        }
-
-        .rev-text { 
-            font-style: italic; 
-            color: var(--text-light); 
-            margin-bottom: 30px; 
-            font-size: 1.05rem; 
-            line-height: 1.6;
-        }
-
-        .rev-author { 
-            font-family: var(--font-heading); 
-            font-size: 1.5rem; 
-            margin-bottom: 5px;
-        }
-
-        .rev-src { 
-            font-size: 0.75rem; 
-            color: var(--text-muted); 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-        }
-
-        @keyframes scrollRev { 
-            0% { transform: translateX(0); } 
-            100% { transform: translateX(-50%); } 
-        }
-
-        /* ==========================================
-           12. B2B И ВАКАНСИИ (ACTION CARDS)
-        ========================================== */
-        .action-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 30px; 
-            padding: 0 0 clamp(80px, 15vh, 150px) 0; 
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 0 0 clamp(100px, 15vh, 200px) 0;
         }
 
         .act-card {
-            padding: clamp(50px, 6vw, 80px) clamp(40px, 5vw, 60px); 
-            border-radius: 30px; 
-            border: 1px solid var(--border);
-            position: relative; 
-            overflow: hidden; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            min-height: clamp(400px, 50vh, 500px);
+            padding: clamp(60px, 8vw, 100px) clamp(50px, 6vw, 80px);
+            border-radius: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: clamp(450px, 50vh, 550px);
+            background: rgba(255,255,255,0.03);
+            overflow: hidden;
         }
 
-        .act-card.dark { 
-            background: var(--bg-card); 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .act-card.gold {
+            background: var(--accent);
+            color: var(--bg-dark);
         }
 
-        .act-card.gold { 
-            background: var(--accent); 
-            color: var(--bg-dark); 
-            border: none; 
+        .act-card h3 {
+            font-size: clamp(3.5rem, 5vw, 5rem);
+            margin-bottom: 25px;
+            line-height: 1;
         }
 
-        .act-card h3 { 
-            font-size: clamp(3rem, 4vw, 4rem); 
-            margin-bottom: 20px; 
+        .act-card p {
+            font-size: 1.15rem;
+            max-width: 80%;
+            line-height: 1.7;
+            margin-bottom: 50px;
+        }
+        
+        .act-card.dark p { color: var(--text-muted); }
+        .act-card.gold p { color: rgba(7,7,7,0.8); }
+
+        footer {
+            padding: 120px 0 40px;
+            border-top: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
         }
 
-        .act-card p { 
-            font-size: 1.1rem; 
-            opacity: 0.8; 
-            max-width: 85%; 
-            line-height: 1.6;
-            margin-bottom: 40px;
+        .foot-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 60px;
+            margin-bottom: 120px;
+            position: relative;
+            z-index: 2;
         }
 
-        .act-card.gold p { 
-            color: rgba(10,9,8,0.8); 
+        .foot-col h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 35px;
         }
 
-        /* ==========================================
-           13. ФУТЕР (FOOTER)
-        ========================================== */
-        footer { 
-            padding: 100px 0 40px; 
-            border-top: 1px solid var(--border); 
-            position: relative; 
-            overflow: hidden; 
+        .foot-col ul li {
+            margin-bottom: 18px;
         }
 
-        .foot-grid { 
-            display: grid; 
-            grid-template-columns: 2fr 1fr 1fr 1.5fr; 
-            gap: 50px; 
-            margin-bottom: 100px; 
-            position: relative; 
-            z-index: 2; 
+        .foot-col ul a {
+            font-size: 1.05rem;
+            transition: color 0.3s;
+            color: var(--text-light);
         }
 
-        .foot-col h4 { 
-            font-family: var(--font-text); 
-            font-size: 0.8rem; 
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            color: var(--text-muted); 
-            margin-bottom: 30px; 
-        }
-
-        .foot-col ul li { 
-            margin-bottom: 15px; 
-        }
-
-        .foot-col ul a { 
-            font-size: 1.05rem; 
-            transition: color 0.3s; 
-            opacity: 0.9;
-        }
-
-        .foot-col ul a:hover { 
-            color: var(--accent); 
-            opacity: 1;
+        .foot-col ul a:hover {
+            color: var(--accent);
         }
 
         .big-footer-text {
-            font-family: var(--font-heading); 
-            font-size: 24vw; 
+            font-family: var(--font-heading);
+            font-size: 25vw;
             line-height: 0.75;
-            text-align: center; 
-            color: rgba(255,255,255,0.02); 
+            text-align: center;
+            color: rgba(255,255,255,0.02);
             pointer-events: none;
-            position: absolute; 
-            bottom: -2%; 
-            left: 50%; 
-            transform: translateX(-50%); 
+            position: absolute;
+            bottom: -3%;
+            left: 50%;
+            transform: translateX(-50%);
             white-space: nowrap;
         }
 
-        .foot-bot { 
-            display: flex; 
-            justify-content: space-between; 
+        .foot-bot {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            border-top: 1px solid var(--border); 
-            padding-top: 30px; 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            position: relative; 
-            z-index: 2; 
+            border-top: 1px solid var(--border-light);
+            padding-top: 40px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            position: relative;
+            z-index: 2;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* ==========================================
-           14. АДАПТИВНОСТЬ (MEDIA QUERIES)
-        ========================================== */
-        
-        /* Планшеты и маленькие ноутбуки */
         @media (max-width: 1200px) {
-            .bento { 
-                grid-template-columns: repeat(2, 1fr); 
-            }
-            .c-1, .c-5, .c-7, .c-8 { grid-column: span 2; }
+            .bento { grid-template-columns: repeat(2, 1fr); }
+            .c-1, .c-5 { grid-column: span 2; }
             .c-2, .c-3, .c-4, .c-6 { grid-column: span 1; }
-            
-            .br-grid { 
-                grid-template-columns: 1fr; 
-            }
-            
-            .about-grid { 
-                grid-template-columns: 1fr; 
-                text-align: center;
-            }
-            .label { 
-                margin-left: auto; 
-                margin-right: auto; 
-            }
-            .about-desc {
-                max-width: 800px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            
-            .foot-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-                gap: 60px;
-            }
+            .br-grid { grid-template-columns: 1fr; }
+            .about-grid { grid-template-columns: 1fr; text-align: center; }
+            .label { margin-left: auto; margin-right: auto; }
+            .about-desc { max-width: 800px; margin-left: auto; margin-right: auto; }
+            .foot-grid { grid-template-columns: repeat(2, 1fr); gap: 60px; }
         }
 
-        /* Мобильные устройства */
         @media (max-width: 768px) {
-            header {
-                padding: 20px 0;
-            }
-            .nav-links, .nav-meta { 
-                display: none; 
-            }
-            .menu-toggle {
+            header { padding: 25px 0; }
+            .nav-links, .nav-meta { display: none; }
+            .menu-toggle { display: flex; }
+            .cursor { display: none !important; }
+            body { cursor: auto; }
+            a, button, .menu-toggle { cursor: pointer; }
+            
+            .bento {
                 display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                padding-bottom: 20px;
+                margin: 0 -4vw;
+                padding-left: 4vw;
+                padding-right: 4vw;
             }
+            .bento::-webkit-scrollbar { display: none; }
             
-            .hero-title { 
-                font-size: 16vw; 
-            }
-            
-            .bento { 
-                grid-template-columns: 1fr; 
-            }
-            .c-1, .c-2, .c-3, .c-4, .c-5, .c-6, .c-7, .c-8 { 
-                grid-column: span 1; 
-            }
-            
-            .action-grid { 
-                grid-template-columns: 1fr; 
-            }
-            
-            .foot-grid { 
-                grid-template-columns: 1fr; 
-                text-align: center;
-                gap: 40px; 
-            }
-            
-            .foot-bot { 
-                flex-direction: column; 
-                gap: 20px; 
-                text-align: center; 
+            .b-card {
+                min-width: 85vw;
+                scroll-snap-align: center;
+                margin-right: 15px;
             }
 
-            /* Отключаем кастомный курсор на мобильных */
-            .cursor-dot, .cursor-outline { 
-                display: none !important; 
+            .br-grid {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                padding-bottom: 20px;
+                margin: 0 -4vw;
+                padding-left: 4vw;
+                padding-right: 4vw;
             }
-            body { 
-                cursor: auto; 
-            }
-            a, button, .menu-toggle { 
-                cursor: pointer; 
-            }
-            
-            /* Делаем параллакс менее интенсивным на телефонах */
-            .img-reveal img {
-                transform: scale(1);
-            }
-            
-            /* Упрощаем hover на мобильных для карточек филиалов */
-            .br-content p {
-                opacity: 0.9;
-                transform: translateY(0);
-            }
-            .br-content {
-                transform: translateY(0);
-            }
-            .br-overlay {
-                background: linear-gradient(to top, rgba(10,9,8,0.95) 0%, rgba(10,9,8,0.4) 100%);
-            }
-        }
+            .br-grid::-webkit-scrollbar { display: none; }
 
-        @media (max-width: 480px) {
-            .btn {
-                padding: 16px 30px;
-                width: 100%;
+            .br-card {
+                min-width: 85vw;
+                scroll-snap-align: center;
+                margin-right: 15px;
             }
-            .btn-wrap {
-                width: 100%;
-                display: block;
-                padding: 0;
-            }
-            .act-card p {
-                max-width: 100%;
-            }
+
+            .action-grid { grid-template-columns: 1fr; }
+            .foot-grid { grid-template-columns: 1fr; text-align: center; }
+            .foot-bot { flex-direction: column; gap: 20px; text-align: center; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Пленочный шум поверх всего сайта -->
     <div class="noise"></div>
+    <div class="cursor" id="cursor"></div>
 
-    <!-- Кастомный курсор -->
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-outline" id="cursor-outline"></div>
-
-    <!-- Прелоадер -->
     <div class="preloader" id="preloader">
         <div class="preloader-logo">ANT'S</div>
     </div>
 
-    <!-- Навигация -->
     <header id="header">
         <div class="container nav-inner">
             <a href="#" class="logo hover-target">ANT'S</a>
@@ -1182,11 +979,10 @@
             
             <div class="nav-meta">
                 <a href="#" class="active hover-target">Гостям</a> / <a href="#b2b" class="hover-target">Бизнесу</a>
-                <span style="margin: 0 15px; opacity: 0.3;">|</span>
+                <span style="margin: 0 10px; opacity: 0.2;">|</span>
                 <a href="#" class="hover-target">En</a> / <a href="#" class="active hover-target">Ru</a>
             </div>
 
-            <!-- Гамбургер меню для мобильных -->
             <button class="menu-toggle hover-target" id="menu-toggle">
                 <span></span>
                 <span></span>
@@ -1195,7 +991,6 @@
         </div>
     </header>
 
-    <!-- Мобильное полноэкранное меню -->
     <div class="mobile-nav" id="mobile-nav">
         <a href="#about">О нас</a>
         <a href="#menu">Меню</a>
@@ -1203,17 +998,12 @@
         <a href="#b2b">Бизнесу</a>
     </div>
 
-    <!-- ГЛАВНЫЙ ЭКРАН (HERO) С ВИДЕО -->
-    <section class="hero">
-        <!-- 
-            ВНИМАНИЕ: Сюда вставьте название вашего сгенерированного видео файла. 
-            Убедитесь, что оно лежит в той же папке, что и index.html 
-        -->
-        <video autoplay loop muted playsinline class="hero-video" id="hero-video">
-            <source src="/hero.mp4" type="video/mp4">
-            <!-- Фолбэк картинка на случай если видео не загрузится -->
-            <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2000&auto=format&fit=crop" alt="Coffee" style="width: 100%; height: 100%; object-fit: cover;">
-        </video>
+    <section class="hero" id="hero">
+        <div class="hero-video-wrap">
+            <video id="main-video" class="video-layer" autoplay loop muted playsinline>
+                <source src="second-var.mp4" type="video/mp4">
+            </video>
+        </div>
         <div class="hero-overlay"></div>
         
         <div class="container hero-content">
@@ -1222,14 +1012,13 @@
                 <div class="mask-text"><span class="italic">Luxury</span></div><br>
                 <div class="mask-text"><span>Coffee.</span></div>
             </h1>
-            <p class="hero-subtitle fade-up">Добро пожаловать в Ant's – место, где каждая чашка кофе становится уникальным эстетическим переживанием.</p>
+            <p class="hero-subtitle fade-up">Место, где каждая чашка кофе становится уникальным кинематографичным переживанием.</p>
             <div class="btn-wrap fade-up">
-                <a href="#menu" class="btn btn-accent hover-target">Открыть меню</a>
+                <a href="#menu" class="btn hover-target">Открыть меню</a>
             </div>
         </div>
     </section>
 
-    <!-- БЕГУЩАЯ СТРОКА -->
     <div class="marquee">
         <div class="marquee-inner">
             <h2>Premium Coffee <i class="ri-sparkling-fill"></i> Traditional Pizza <i class="ri-sparkling-fill"></i> Fire Steaks <i class="ri-sparkling-fill"></i> Aesthetic Desserts <i class="ri-sparkling-fill"></i></h2>
@@ -1237,287 +1026,198 @@
         </div>
     </div>
 
-    <!-- СЕКЦИЯ: О НАС -->
     <section class="about" id="about">
         <div class="container about-grid">
             <div>
                 <span class="label fade-up">Узнайте о нас</span>
-                <h2 class="about-title fade-up">Мы создали это пространство с любовью к <span style="color: var(--accent); font-style: italic;">деталям</span>.</h2>
+                <h2 class="about-title fade-up">Пространство с любовью к <span style="color: var(--accent); font-style: italic;">деталям</span>.</h2>
                 <div class="fade-up">
-                    <p class="about-desc">Наша история началась с 2020 года. Мы гордимся уникальными рецептами, экологической ответственностью и современным дизайном, который вдохновляет.</p>
-                    <p class="about-desc">В Ant's вы не просто пьете кофе – вы наслаждаетесь вниманием к деталям, теплотой обстановки и уютом. Присоединяйтесь к нам в путешествии по миру ароматов и вкусов.</p>
+                    <p class="about-desc">Наша история началась в 2020 году. Мы гордимся уникальными рецептами, бескомпромиссным качеством и глубоким дизайном, который вдохновляет.</p>
+                    <p class="about-desc">В Ant's вы наслаждаетесь вниманием к деталям, премиальной эстетикой и уютом. Присоединяйтесь к нашему путешествию.</p>
                 </div>
-                <div class="btn-wrap fade-up" style="margin-top: 30px;">
-                    <a href="#menu" class="btn hover-target">Наши преимущества</a>
+                <div class="btn-wrap fade-up" style="margin-top: 20px;">
+                    <a href="#menu" class="btn hover-target">Философия вкуса</a>
                 </div>
             </div>
             <div class="about-img-wrap img-reveal">
-                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop" alt="Interior" class="parallax-img">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1000&auto=format&fit=crop" alt="Interior">
             </div>
         </div>
     </section>
 
-    <!-- СЕКЦИЯ: МЕНЮ И ПРЕИМУЩЕСТВА (BENTO GRID) -->
     <section class="features" id="menu">
         <div class="container">
             <span class="label fade-up" style="text-align: center;">Что мы предлагаем</span>
             <h2 class="sec-title serif fade-up">Искусство <span style="font-style: italic; color: var(--accent);">Вкуса</span></h2>
             
             <div class="bento">
-                <!-- 1. Кофе -->
                 <div class="b-card c-1 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag" style="border-color: rgba(255,255,255,0.2);">Напитки</span>
-                        <div class="b-icon" style="background: rgba(255,255,255,0.1); color:#fff; border-color: rgba(255,255,255,0.2);"><i class="ri-cup-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">01</div>
-                        <h3 class="serif">Наш кофе</h3>
-                        <p>Идеальное сочетание аромата и насыщенного вкуса, приготовленное с любовью к каждой чашке.</p>
+                    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1000&auto=format&fit=crop" class="b-bg" alt="Coffee">
+                    <div class="b-overlay"></div>
+                    <div class="b-content">
+                        <div class="b-head">
+                            <span class="b-tag">Напитки</span>
+                            <div class="b-icon"><i class="ri-cup-line"></i></div>
+                        </div>
+                        <div class="b-bot">
+                            <div class="b-num">01</div>
+                            <h3 class="serif">Наш кофе</h3>
+                            <p>Идеальное сочетание аромата и насыщенного вкуса, приготовленное с любовью.</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 2. Интерьер -->
                 <div class="b-card c-2 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag">Атмосфера</span>
-                        <div class="b-icon"><i class="ri-sofa-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">02</div>
-                        <h3 class="serif">Интерьер</h3>
-                        <p>Воплощает стиль и уют с мягкой мебелью и приглушенными оттенками.</p>
+                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop" class="b-bg" alt="Interior">
+                    <div class="b-overlay"></div>
+                    <div class="b-content">
+                        <div class="b-head">
+                            <span class="b-tag">Атмосфера</span>
+                            <div class="b-icon"><i class="ri-sofa-line"></i></div>
+                        </div>
+                        <div class="b-bot">
+                            <div class="b-num">02</div>
+                            <h3 class="serif">Интерьер</h3>
+                            <p>Глубокие тона, премиальные материалы и абсолютный комфорт.</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 3. Пицца -->
                 <div class="b-card c-3 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag">Кухня</span>
-                        <div class="b-icon"><i class="ri-pie-chart-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">03</div>
-                        <h3 class="serif">Пицца</h3>
-                        <p>Нежное тесто, обильно украшенное начинками, наполняет воздух ароматом.</p>
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=800&auto=format&fit=crop" class="b-bg" alt="Pizza">
+                    <div class="b-overlay"></div>
+                    <div class="b-content">
+                        <div class="b-head">
+                            <span class="b-tag">Кухня</span>
+                            <div class="b-icon"><i class="ri-pie-chart-line"></i></div>
+                        </div>
+                        <div class="b-bot">
+                            <div class="b-num">03</div>
+                            <h3 class="serif">Пицца</h3>
+                            <p>Традиционная рецептура и лучшие ингредиенты из Италии.</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 4. Эстетика -->
                 <div class="b-card c-4 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag">Подача</span>
-                        <div class="b-icon"><i class="ri-sparkling-2-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">04</div>
-                        <h3 class="serif">Красиво</h3>
-                        <p>Особое внимание эстетике блюд для визуального наслаждения.</p>
+                    <img src="https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?q=80&w=800&auto=format&fit=crop" class="b-bg" alt="Breakfast">
+                    <div class="b-overlay"></div>
+                    <div class="b-content">
+                        <div class="b-head">
+                            <span class="b-tag">Утро</span>
+                            <div class="b-icon"><i class="ri-sun-cloudy-line"></i></div>
+                        </div>
+                        <div class="b-bot">
+                            <div class="b-num">04</div>
+                            <h3 class="serif">Завтраки</h3>
+                            <p>Сытное и эстетичное начало вашего безупречного дня.</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 5. Стейки -->
                 <div class="b-card c-5 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag">Гриль</span>
-                        <div class="b-icon"><i class="ri-fire-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">05</div>
-                        <h3 class="serif">Стейки</h3>
-                        <p>Выдающийся вкус и внимание к эстетике подачи на открытом огне.</p>
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1000&auto=format&fit=crop" class="b-bg" alt="Steak">
+                    <div class="b-overlay"></div>
+                    <div class="b-content">
+                        <div class="b-head">
+                            <span class="b-tag">Гриль</span>
+                            <div class="b-icon"><i class="ri-fire-line"></i></div>
+                        </div>
+                        <div class="b-bot">
+                            <div class="b-num">05</div>
+                            <h3 class="serif">Стейки</h3>
+                            <p>Выдающийся вкус и кинематографичная подача на открытом огне.</p>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 6. Завтраки -->
                 <div class="b-card c-6 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag">Утро</span>
-                        <div class="b-icon"><i class="ri-sun-cloudy-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">06</div>
-                        <h3 class="serif">Завтраки</h3>
-                        <p>Вкусные и сытные, готовые подарить энергию на весь день.</p>
-                    </div>
-                </div>
-                
-                <!-- 7. Десерты -->
-                <div class="b-card c-7 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag">Сладости</span>
-                        <div class="b-icon"><i class="ri-cake-3-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">07</div>
-                        <h3 class="serif">Десерты</h3>
-                        <p>Сладкий рай в каждом кусочке, приносящий истинное удовольствие.</p>
-                    </div>
-                </div>
-                
-                <!-- 8. Дети -->
-                <div class="b-card c-8 fade-up hover-target">
-                    <div class="b-head">
-                        <span class="b-tag" style="border-color: rgba(255,255,255,0.2);">Семья</span>
-                        <div class="b-icon" style="background: rgba(255,255,255,0.1); color:#fff; border-color: rgba(255,255,255,0.2);"><i class="ri-bear-smile-line"></i></div>
-                    </div>
-                    <div class="b-bot">
-                        <div class="b-num">08</div>
-                        <h3 class="serif">Для детей</h3>
-                        <p>В филиалах Seven и Erkindik есть площадки, где дети могут играть в безопасности, пока родители наслаждаются отдыхом.</p>
+                    <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=800&auto=format&fit=crop" class="b-bg" alt="Dessert">
+                    <div class="b-overlay"></div>
+                    <div class="b-content">
+                        <div class="b-head">
+                            <span class="b-tag">Сладости</span>
+                            <div class="b-icon"><i class="ri-cake-3-line"></i></div>
+                        </div>
+                        <div class="b-bot">
+                            <div class="b-num">06</div>
+                            <h3 class="serif">Десерты</h3>
+                            <p>Визуальное и вкусовое наслаждение в каждом кусочке.</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            
         </div>
     </section>
 
-    <!-- СЕКЦИЯ: ФИЛИАЛЫ -->
     <section class="branches" id="branches">
         <div class="container">
             <span class="label fade-up" style="text-align: center;">Наши локации</span>
-            <h2 class="sec-title serif fade-up" style="margin-bottom: clamp(40px, 8vh, 80px);">Где нас найти</h2>
+            <h2 class="sec-title serif fade-up">Где нас найти</h2>
             
             <div class="br-grid">
-                <!-- Erkindik -->
                 <div class="br-card hover-target fade-up">
-                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop" class="br-bg" alt="Erkindik">
-                    <div class="br-overlay"></div>
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop" class="br-card-bg" alt="Erkindik">
+                    <div class="br-overlay-grad"></div>
                     <div class="br-content">
-                        <span class="label" style="color:#fff;">Erkindik</span>
-                        <h3 class="serif">ANT'S Эркиндик</h3>
-                        <p>Городское кафе в центре Бишкека. Место для уютных встреч, вкусных завтраков и романтических ужинов с пиццей из печи.</p>
+                        <h3 class="serif">Эркиндик</h3>
+                        <p>Центр Бишкека. Уютные встречи, завтраки и романтические ужины с пиццей из печи.</p>
                     </div>
                 </div>
                 
-                <!-- Novotel -->
                 <div class="br-card hover-target fade-up">
-                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop" class="br-bg" alt="Novotel">
-                    <div class="br-overlay"></div>
+                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop" class="br-card-bg" alt="Novotel">
+                    <div class="br-overlay-grad"></div>
                     <div class="br-content">
-                        <span class="label" style="color:#fff;">Novotel</span>
-                        <h3 class="serif">ANT'S Novotel</h3>
-                        <p>Кофейня в одном из лучших отелей города. Идеально для деловых встреч, работы и наслаждения кофе с собой.</p>
+                        <h3 class="serif">Novotel</h3>
+                        <p>В одном из лучших отелей. Идеально для деловых встреч и премиального кофе с собой.</p>
                     </div>
                 </div>
 
-                <!-- Seven -->
                 <div class="br-card hover-target fade-up">
-                    <img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=800&auto=format&fit=crop" class="br-bg" alt="Seven">
-                    <div class="br-overlay"></div>
+                    <img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=800&auto=format&fit=crop" class="br-card-bg" alt="Seven">
+                    <div class="br-overlay-grad"></div>
                     <div class="br-content">
-                        <span class="label" style="color:#fff;">Seven</span>
-                        <h3 class="serif">ANT'S Seven</h3>
-                        <p>Локация в ресторанном комплексе Seven. Удобна для деловых переговоров, быстрых перекусов и встреч с друзьями.</p>
+                        <h3 class="serif">Seven</h3>
+                        <p>Ресторанный комплекс. Пространство для деловых переговоров и отдыха с друзьями.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- СЕКЦИЯ: ОТЗЫВЫ -->
-    <section class="reviews">
-        <h2 class="sec-title serif fade-up" style="margin-bottom: clamp(30px, 5vh, 60px);">Гости о нас</h2>
-        
-        <div class="rev-track hover-target">
-            <!-- Оригинальный набор -->
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Очень люблю данное заведение. Особенно стоит отметить вкусную пиццу, десерты и внимательное обслуживание. Отдельное спасибо Амиру."</p>
-                <div class="rev-author">Alima A</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Зашла сюда прочитав много хороших отзывов и не прогадала. Меню небольшое, но каждый найдет что-то для себя. Официанты вежливые."</p>
-                <div class="rev-author">Pantausena</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Отличное место, чтобы вкусно поесть и просто отдохнуть. Интерьер очень привлекательный и персонал доброжелательный."</p>
-                <div class="rev-author">Anastasia K</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Прекрасное, атмосферное место. Вкусная еда, быстрое обслуживание. Идеальное место где можно провести вечер."</p>
-                <div class="rev-author">Дарья Калинкина</div>
-                <div class="rev-src">2GIS</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Одно из любимых заведений в городе. Советую всем попробовать блюдо: лосось с соусом кешью, и суп Том-Ям."</p>
-                <div class="rev-author">Jaihunka A</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-            
-            <!-- Дубликат для бесшовной бесконечной анимации -->
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Очень люблю данное заведение. Особенно стоит отметить вкусную пиццу, десерты и внимательное обслуживание. Отдельное спасибо Амиру."</p>
-                <div class="rev-author">Alima A</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Зашла сюда прочитав много хороших отзывов и не прогадала. Меню небольшое, но каждый найдет что-то для себя. Официанты вежливые."</p>
-                <div class="rev-author">Pantausena</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Отличное место, чтобы вкусно поесть и просто отдохнуть. Интерьер очень привлекательный и персонал доброжелательный."</p>
-                <div class="rev-author">Anastasia K</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Прекрасное, атмосферное место. Вкусная еда, быстрое обслуживание. Идеальное место где можно провести вечер."</p>
-                <div class="rev-author">Дарья Калинкина</div>
-                <div class="rev-src">2GIS</div>
-            </div>
-            <div class="rev-card">
-                <div class="stars">★★★★★</div>
-                <p class="rev-text">"Одно из любимых заведений в городе. Советую всем попробовать блюдо: лосось с соусом кешью, и суп Том-Ям."</p>
-                <div class="rev-author">Jaihunka A</div>
-                <div class="rev-src">Tripadvisor</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- СЕКЦИЯ: B2B И ВАКАНСИИ -->
     <section class="container action-grid" id="b2b">
         <div class="act-card dark fade-up hover-target">
             <div>
                 <span class="label">B2B</span>
                 <h3 class="serif">Для бизнеса</h3>
-                <p>Хотите обсудить сотрудничество? Отправьте коммерческое предложение или оставьте контактные данные.</p>
+                <p>Хотите обсудить партнерство? Отправьте коммерческое предложение нашему руководству.</p>
             </div>
-            <div class="btn-wrap">
-                <a href="#" class="btn btn-accent">Стать партнером</a>
+            <div class="btn-wrap" style="padding:0;">
+                <a href="#" class="btn">Стать партнером</a>
             </div>
         </div>
         
         <div class="act-card gold fade-up hover-target">
             <div>
-                <span class="label" style="color: var(--bg-dark);">Команда</span>
+                <span class="label" style="color: #070707;">Команда</span>
                 <h3 class="serif">Вакансии</h3>
-                <p>Для тех, кто хочет работать и расти. Присоединяйтесь к семье ANT'S и развивайтесь вместе с нами.</p>
+                <p>Для тех, кто стремится к идеалу. Присоединяйтесь к семье ANT'S.</p>
             </div>
-            <div class="btn-wrap">
-                <a href="#" class="btn" style="border-color: var(--bg-dark); color: var(--bg-dark);">Открытые позиции</a>
+            <div class="btn-wrap" style="padding:0;">
+                <a href="#" class="btn" style="box-shadow: inset 0 0 0 1px #070707; color: #070707;">Открытые позиции</a>
             </div>
         </div>
     </section>
 
-    <!-- ФУТЕР -->
     <footer>
         <div class="big-footer-text">ANT'S</div>
         <div class="container">
             <div class="foot-grid">
                 <div class="foot-col">
-                    <a href="#" class="logo hover-target" style="margin-bottom: 20px; display: block;">ANT'S</a>
-                    <p style="color: var(--text-muted); max-width: 250px;">Пространство, где каждая деталь имеет значение.</p>
+                    <a href="#" class="logo hover-target" style="margin-bottom: 25px; display: block;">ANT'S</a>
+                    <p style="color: var(--text-muted);  line-height: 1.7; ">Пространство, где каждая деталь имеет значение.</p>
                 </div>
                 <div class="foot-col">
                     <h4>Навигация</h4>
@@ -1537,28 +1237,24 @@
                 </div>
                 <div class="foot-col">
                     <h4>Связь</h4>
-                    <p style="color: var(--text-muted); margin-bottom: 25px;">Ждем вас каждый день в наших локациях.</p>
-                    <a href="#" class="btn btn-accent hover-target" style="padding: 15px 30px; font-size: 0.75rem;">Написать нам</a>
+                    <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.7;">Ждем вас каждый день в наших локациях.</p>
+                    <div class="btn-wrap" style="padding:0;">
+                        <a href="#" class="btn hover-target" style="padding: 18px 40px;">Написать нам</a>
+                    </div>
                 </div>
             </div>
             
             <div class="foot-bot">
-                <div>&copy; <span id="year"></span> Ant's Coffee & Restaurant. All rights reserved.</div>
-                <div>Premium Web Concept by AI</div>
+                <div>&copy; <span id="year"></span> Ant's Coffee & Restaurant.</div>
+                <div>Premium Web Concept</div>
             </div>
         </div>
     </footer>
 
-    <!-- ==========================================
-         Скрипты (Lenis, Анимации, Курсор)
-    ========================================== -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // 1. Установка текущего года в футере
             document.getElementById('year').textContent = new Date().getFullYear();
 
-            // 2. Инициализация Lenis (Плавный скролл)
             const lenis = new Lenis({
                 duration: 1.5,
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -1572,59 +1268,66 @@
             }
             requestAnimationFrame(raf);
 
-            // 3. Логика прелоадера
             setTimeout(() => {
                 const preloader = document.getElementById('preloader');
                 if(preloader) {
                     preloader.classList.add('hidden');
-                    // Запуск анимаций только после исчезновения прелоадера
-                    setTimeout(initScrollReveals, 500); 
+                    setTimeout(initScrollReveals, 400); 
                 }
             }, 2500);
 
-            // 4. Кастомный курсор (только для десктопа)
-            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-            const cursorDot = document.getElementById('cursor-dot');
-            const cursorOutline = document.getElementById('cursor-outline');
+            const video = document.getElementById('main-video');
+            const hero = document.getElementById('hero');
             
-            if (!isTouchDevice && cursorDot && cursorOutline) {
-                const hoverTargets = document.querySelectorAll('.hover-target, a, button');
+            if (video && hero) {
+                // video.playbackRate = 0.8;
+                video.play().catch(() => {});
+                
+                video.addEventListener('timeupdate', () => {
+                    const remaining = video.duration - video.currentTime;
+                    if (remaining < 0.3) {
+                        hero.classList.add('noise-boost');
+                    } else {
+                        hero.classList.remove('noise-boost');
+                    }
+                });
+            }
+
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const cursor = document.getElementById('cursor');
+            
+            if (!isTouchDevice && cursor) {
                 let mouseX = window.innerWidth / 2; 
                 let mouseY = window.innerHeight / 2;
-                let outlineX = mouseX; 
-                let outlineY = mouseY;
+                let cursorX = mouseX; 
+                let cursorY = mouseY;
 
                 window.addEventListener('mousemove', (e) => {
                     mouseX = e.clientX; 
                     mouseY = e.clientY;
-                    cursorDot.style.left = `${mouseX}px`;
-                    cursorDot.style.top = `${mouseY}px`;
                 });
 
                 const animateCursor = () => {
-                    outlineX += (mouseX - outlineX) * 0.15;
-                    outlineY += (mouseY - outlineY) * 0.15;
-                    cursorOutline.style.left = `${outlineX}px`;
-                    cursorOutline.style.top = `${outlineY}px`;
+                    cursorX += (mouseX - cursorX) * 0.15;
+                    cursorY += (mouseY - cursorY) * 0.15;
+                    cursor.style.left = `${cursorX}px`;
+                    cursor.style.top = `${cursorY}px`;
                     requestAnimationFrame(animateCursor);
                 };
                 animateCursor();
 
-                hoverTargets.forEach(target => {
-                    target.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
-                    target.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+                document.querySelectorAll('.hover-target, a, button').forEach(el => {
+                    el.addEventListener('mouseenter', () => cursor.classList.add('active'));
+                    el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
                 });
             }
 
-            // 5. Анимации при скролле (Intersection Observer)
             function initScrollReveals() {
                 const revealElements = document.querySelectorAll('.fade-up, .mask-text, .img-reveal');
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
                             entry.target.classList.add('is-inview');
-                            // Опционально: отключаем наблюдение после появления
-                            // observer.unobserve(entry.target); 
                         }
                     });
                 }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
@@ -1637,49 +1340,25 @@
                 });
             }
 
-            // 6. Параллакс для изображений (только на десктопе)
-            if (!isTouchDevice) {
-                const parallaxImages = document.querySelectorAll('.parallax-img');
-                window.addEventListener('scroll', () => {
-                    const scrolled = window.scrollY;
-                    parallaxImages.forEach(img => {
-                        const speed = 0.12;
-                        img.style.transform = `translateY(${scrolled * speed}px)`;
-                    });
-                });
-            }
-
-            // 7. Смена фона у шапки при скролле
             const header = document.getElementById('header');
             if(header) {
                 window.addEventListener('scroll', () => {
-                    if (window.scrollY > 50) {
-                        header.classList.add('scrolled');
-                    } else {
-                        header.classList.remove('scrolled');
-                    }
+                    if (window.scrollY > 50) header.classList.add('scrolled');
+                    else header.classList.remove('scrolled');
                 });
             }
 
-            // 8. Мобильное меню (Гамбургер)
             const menuToggle = document.getElementById('menu-toggle');
             const mobileNav = document.getElementById('mobile-nav');
             
             if (menuToggle && mobileNav) {
                 const mobileLinks = mobileNav.querySelectorAll('a');
-
                 menuToggle.addEventListener('click', () => {
                     menuToggle.classList.toggle('active');
                     mobileNav.classList.toggle('active');
-                    
-                    // Блокируем скролл когда меню открыто
-                    if (mobileNav.classList.contains('active')) {
-                        lenis.stop();
-                    } else {
-                        lenis.start();
-                    }
+                    if (mobileNav.classList.contains('active')) lenis.stop();
+                    else lenis.start();
                 });
-
                 mobileLinks.forEach(link => {
                     link.addEventListener('click', () => {
                         menuToggle.classList.remove('active');
@@ -1689,28 +1368,23 @@
                 });
             }
 
-            // 9. Плавный скролл по якорным ссылкам с использованием Lenis
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     const targetId = this.getAttribute('href');
                     if(targetId === '#') return;
-                    
                     const target = document.querySelector(targetId);
                     if (target) {
                         e.preventDefault();
-                        // Учитываем высоту фиксированной шапки (offset)
                         lenis.scrollTo(target, { offset: -80, duration: 1.5 });
                     }
                 });
             });
 
-            // 10. Переключение кнопок навигации (Гостям/Бизнесу и Языки)
             const metaToggles = document.querySelectorAll('.nav-meta a');
             metaToggles.forEach(toggle => {
                 toggle.addEventListener('click', function(e) {
                     if (this.getAttribute('href') === '#') {
                         e.preventDefault();
-                        // Находим соседние элементы
                         const siblings = this.parentElement.querySelectorAll('a');
                         siblings.forEach(s => s.classList.remove('active'));
                         this.classList.add('active');
